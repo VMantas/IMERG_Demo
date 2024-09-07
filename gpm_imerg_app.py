@@ -1,5 +1,21 @@
-import os
 import streamlit as st
+import pkg_resources
+
+# Function to list installed packages
+def list_installed_packages():
+    installed_packages = pkg_resources.working_set
+    packages_list = sorted(["{}=={}".format(i.key, i.version) for i in installed_packages])
+    return packages_list
+
+# Display installed packages in Streamlit
+st.sidebar.header("Installed Libraries")
+installed_packages = list_installed_packages()
+for package in installed_packages:
+    st.sidebar.text(package)
+
+# Your existing code follows
+
+import os
 import earthaccess
 import xarray as xr
 import matplotlib.pyplot as plt
