@@ -3,6 +3,7 @@ import streamlit as st
 import os
 import earthaccess
 import xarray as xr
+from xr import netcdf4
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from datetime import datetime
