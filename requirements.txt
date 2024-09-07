@@ -3,3 +3,4 @@ earthaccess
 xarray
 matplotlib
 cartopy
+netCDF4
