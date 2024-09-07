@@ -45,6 +45,11 @@ def get_gpm_imerg_data():
         return None
     
     try:
+
+        # Check if netcdf4 library is installed
+        import netcdf4  # This will raise an ImportError if not installed
+
+    
         # Get the first available dataset
         dataset_link = results[0].data_links()[0]
         st.write(f"Dataset link: {dataset_link}")
@@ -54,6 +59,8 @@ def get_gpm_imerg_data():
         
        
         return ds
+    except ImportError:
+        st.error("netcdf4 library is not installed. Please install it using 'pip install netcdf4'.")
     except Exception as e:
         st.error(f"Error loading dataset: {str(e)}")
         return None
