@@ -1,6 +1,9 @@
 streamlit
+netCDF4
+h5netcdf
+h5py
+scipy
 earthaccess
-xarray
 matplotlib
 cartopy
-netCDF4
+xarray
