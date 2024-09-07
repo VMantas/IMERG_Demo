@@ -13,10 +13,8 @@ st.title("GPM IMERG Precipitation Data Viewer")
 # Authenticate with NASA EarthData
 @st.cache_resource
 def authenticate():
-    auth = earthaccess.login(
-        username=os.getenv('EARTHDATA_USERNAME'),
-        password=os.getenv('EARTHDATA_PASSWORD')
-    )
+    # earthaccess will use environment variables EARTHDATA_USERNAME and EARTHDATA_PASSWORD if set
+    auth = earthaccess.login()
     return auth
 
 auth = authenticate()
