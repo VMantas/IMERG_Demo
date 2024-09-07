@@ -50,7 +50,7 @@ def get_gpm_imerg_data():
 
         # Open the dataset using rasterio
         with rasterio.open(dataset_link) as src:
-            # Get the precipitation data band (assuming band name is 'precipitationCal')
+            # Get the precipitation data band (assuming band name is 'precipitation')
             precipitation = src.read(1)
 
             # Get the geo-transform and CRS for plotting
