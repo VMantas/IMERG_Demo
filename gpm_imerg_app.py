@@ -45,7 +45,7 @@ def get_gpm_imerg_data():
         st.write(f"Dataset link: {dataset_link}")
         
         # Open the dataset using xarray
-        ds = xr.open_dataset(dataset_link, engine="netcdf4")
+        ds = xr.open_dataset(dataset_link)
         return ds
     except Exception as e:
         st.error(f"Error loading dataset: {str(e)}")
