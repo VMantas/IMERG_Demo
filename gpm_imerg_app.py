@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from datetime import datetime
 
+import netcdf4
+
 
 
 # Set up page configuration
