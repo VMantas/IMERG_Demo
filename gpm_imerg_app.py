@@ -4,7 +4,7 @@ import earthaccess
 import xarray as xr
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-from datetime import datetime, timedelta
+from datetime import datetime
 
 # Set up page configuration
 st.set_page_config(layout="wide")
@@ -13,7 +13,6 @@ st.title("GPM IMERG Precipitation Data Viewer")
 # Authenticate with NASA EarthData
 @st.cache_resource
 def authenticate():
-    # earthaccess will use environment variables EARTHDATA_USERNAME and EARTHDATA_PASSWORD if set
     auth = earthaccess.login()
     return auth
 
@@ -22,19 +21,20 @@ auth = authenticate()
 # Retrieve GPM IMERG data
 @st.cache_data
 def get_gpm_imerg_data():
-    yesterday = datetime.utcnow().date() - timedelta(days=1)
-    data_date = yesterday.strftime("%Y%m%d")
+    # Set the date to December 28, 2020
+    data_date = "20201228"
     
-    # Search for the GPM IMERG data
+    # Search for the GPM IMERG Final data
     results = earthaccess.search_data(
         short_name="GPM_3IMERGDF",
+        version="06",
         cloud_hosted=True,
         temporal=(f"{data_date}", f"{data_date}"),
         bounding_box=(-180, -90, 180, 90)
     )
     
     if not results:
-        st.error(f"No data found for {yesterday}")
+        st.error(f"No data found for {data_date}")
         return None
     
     # Open the dataset using xarray
@@ -75,7 +75,7 @@ def plot_precipitation(data, min_lon, max_lon, min_lat, max_lat, vmin, vmax):
     cbar.set_label('Precipitation (mm/day)')
     
     # Set the title
-    ax.set_title(f"GPM IMERG Precipitation {data.time.dt.date.values[0]}")
+    ax.set_title(f"GPM IMERG Final Precipitation {data.time.dt.date.values[0]}")
     
     # Set the extent
     ax.set_extent([min_lon, max_lon, min_lat, max_lat], crs=ccrs.PlateCarree())
