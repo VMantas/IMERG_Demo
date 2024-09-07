@@ -6,11 +6,7 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from datetime import datetime
 
-def check_installed_packages():
-    result = subprocess.run(['pip', 'freeze'], stdout=subprocess.PIPE)
-    st.write(result.stdout.decode('utf-8'))
 
-check_installed_packages()
 
 # Set up page configuration
 st.set_page_config(layout="wide")
