@@ -19,7 +19,6 @@ def authenticate():
 auth = authenticate()
 
 # Retrieve GPM IMERG data
-@st.cache_data
 def get_gpm_imerg_data():
     # Set the date to December 28, 2020
     data_date = "20201228"
@@ -33,14 +32,26 @@ def get_gpm_imerg_data():
         bounding_box=(-180, -90, 180, 90)
     )
     
+    # Debugging: show results and check if data is returned
+    st.write(f"Search results: {results}")
+    
     if not results:
         st.error(f"No data found for {data_date}")
         return None
     
-    # Open the dataset using xarray
-    ds = xr.open_dataset(results[0].data_links()[0], engine="h5netcdf")
-    return ds
+    try:
+        # Get the first available dataset
+        dataset_link = results[0].data_links()[0]
+        st.write(f"Dataset link: {dataset_link}")
+        
+        # Open the dataset using xarray
+        ds = xr.open_dataset(dataset_link, engine="h5netcdf")
+        return ds
+    except Exception as e:
+        st.error(f"Error loading dataset: {str(e)}")
+        return None
 
+# Load the data (no caching for now to avoid issues with file locking)
 data = get_gpm_imerg_data()
 
 # Add a sidebar for user inputs
@@ -82,6 +93,7 @@ def plot_precipitation(data, min_lon, max_lon, min_lat, max_lat, vmin, vmax):
     
     return fig
 
+# Check if data is available before plotting
 if data is not None:
     st.pyplot(plot_precipitation(data, min_lon, max_lon, min_lat, max_lat, vmin, vmax))
 else:
