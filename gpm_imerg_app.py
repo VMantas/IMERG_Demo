@@ -47,7 +47,7 @@ def get_gpm_imerg_data():
     try:
 
         # Check if netcdf4 library is installed
-        import netcdf4  # This will raise an ImportError if not installed
+        import netCDF4  # This will raise an ImportError if not installed
 
     
         # Get the first available dataset
