@@ -31,7 +31,7 @@ def get_gpm_imerg_data():
         results = earthaccess.search_data(
             short_name="GPM_3IMERGDF",
             version="07",
-            cloud_hosted=True,
+            cloud_hosted=False,
             temporal=(f"{data_date}", f"{data_date}"),
             bounding_box=(-180, -90, 180, 90)
         )
