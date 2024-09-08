@@ -13,10 +13,3 @@ rasterio
 dask
 requests
 scipy
-pydap
-zarr
-fsspe
-cftim
-rasterio
-cfgrib
-pooch 
