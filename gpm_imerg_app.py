@@ -7,8 +7,6 @@ import cartopy.crs as ccrs
 from datetime import datetime
 
 
-st.write("Available netCDF engines:", xr.backends.list_engines())
-
 # Set up page configuration
 st.set_page_config(layout="wide")
 st.title("GPM IMERG Precipitation Data Viewer")
