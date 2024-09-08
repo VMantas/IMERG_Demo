@@ -49,7 +49,7 @@ def get_gpm_imerg_data():
         chunks = {'lon': 100, 'lat': 100, 'time': 1}
         with xr.open_dataset(dataset_link, engine='netcdf4', chunks=chunks) as ds:
             # Load only the precipitation data
-            precip_data = ds['precipitationCal'].load()
+            precip_data = ds['precipitation'].load()
         
         st.success("Successfully loaded precipitation data")
         return precip_data
