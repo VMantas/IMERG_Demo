@@ -67,5 +67,4 @@ if data is not None:
     st.write("Data shape:", data.shape)
 else:
     st.error("Failed to load data")
-else:
-    st.warning("No data available to display.")
+
