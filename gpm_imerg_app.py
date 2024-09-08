@@ -3,6 +3,7 @@ import earthaccess
 import xarray as xr
 import os
 import requests
+import netCDF4
 
 # Authenticate with NASA EarthData
 @st.cache_resource
