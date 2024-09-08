@@ -47,7 +47,7 @@ def get_gpm_imerg_data():
         
         # Open dataset with chunking to reduce memory usage
         chunks = {'lon': 10, 'lat': 10, 'time': 1}
-        with xr.open_dataset(dataset_link, engine='netCDF4', chunks=chunks) as ds:
+        with xr.open_dataset('https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDF.07/2020/12/3B-DAY.MS.MRG.3IMERG.20201228-S000000-E235959.V07B.nc4', engine='netCDF4', chunks=chunks) as ds:
             # Load only the precipitation data
             precip_data = ds['precipitationCal'].load()
         
