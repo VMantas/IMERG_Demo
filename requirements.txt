@@ -11,3 +11,4 @@ cartopy
 netcdf4
 rasterio
 dask
+requests
