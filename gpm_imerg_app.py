@@ -7,7 +7,6 @@ import cartopy.crs as ccrs
 from datetime import datetime
 
 
-st.write("xarray version:", xr.__version__)
 st.write("Available netCDF engines:", xr.backends.list_engines())
 
 # Set up page configuration
