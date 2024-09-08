@@ -10,3 +10,4 @@ matplotlib
 cartopy
 netcdf4
 rasterio
+dask
