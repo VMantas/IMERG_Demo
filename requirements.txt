@@ -12,7 +12,7 @@ netcdf4
 rasterio
 dask
 requests
-cipy
+scipy
 pydap
 zarr
 fsspe
