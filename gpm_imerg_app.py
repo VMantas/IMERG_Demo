@@ -1,12 +1,10 @@
 import streamlit as st
-
 import os
 import earthaccess
 import xarray as xr
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from datetime import datetime
-
 
 
 
@@ -23,12 +21,9 @@ def authenticate():
 
 auth = authenticate()
 
-# Retrieve GPM IMERG data
 def get_gpm_imerg_data():
-    # Set the date to December 28, 2020
     data_date = "20201228"
     
-    # Search for the GPM IMERG Final data
     results = earthaccess.search_data(
         short_name="GPM_3IMERGDF",
         version="07",
@@ -37,7 +32,6 @@ def get_gpm_imerg_data():
         bounding_box=(-180, -90, 180, 90)
     )
     
-    # Debugging: show results and check if data is returned
     st.write(f"Search results: {results}")
     
     if not results:
@@ -45,22 +39,20 @@ def get_gpm_imerg_data():
         return None
     
     try:
-
-        # Check if netcdf4 library is installed
-        import netCDF4  # This will raise an ImportError if not installed
-
-    
-        # Get the first available dataset
         dataset_link = results[0].data_links()[0]
         st.write(f"Dataset link: {dataset_link}")
         
-        # Open the dataset using xarray
-        ds = xr.open_dataset(dataset_link, engine="netCDF4")
+        # Try different engines
+        for engine in ['netcdf4', 'h5netcdf']:
+            try:
+                ds = xr.open_dataset(dataset_link, engine=engine)
+                st.success(f"Successfully opened dataset with {engine} engine")
+                return ds
+            except Exception as e:
+                st.write(f"Failed to open with {engine} engine: {str(e)}")
         
-       
-        return ds
-    except ImportError:
-        st.error("netcdf4 library is not installed. Please install it using 'pip install netcdf4'.")
+        st.error("Failed to open dataset with any available engine")
+        return None
     except Exception as e:
         st.error(f"Error loading dataset: {str(e)}")
         return None
