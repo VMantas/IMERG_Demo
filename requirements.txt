@@ -12,3 +12,11 @@ netcdf4
 rasterio
 dask
 requests
+cipy
+pydap
+zarr
+fsspe
+cftim
+rasterio
+cfgrib
+pooch 
