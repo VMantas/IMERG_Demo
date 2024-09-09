@@ -8,7 +8,7 @@ import tempfile
 st.title("GPM IMERG Final Precipitation Data")
 
 # Upload NetCDF file
-uploaded_file = st.file_uploader("Upload GPM IMERG Final NetCDF File", type="nc")
+uploaded_file = st.file_uploader("Upload GPM IMERG Final NetCDF File", type="nc4")
 
 if uploaded_file:
     # Save the uploaded file to a temporary file on disk
