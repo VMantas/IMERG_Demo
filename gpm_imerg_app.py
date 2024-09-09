@@ -41,31 +41,12 @@ if uploaded_file:
         # Set up the map plot with Cartopy
         fig, ax = plt.subplots(figsize=(10, 6), subplot_kw={'projection': ccrs.PlateCarree()})
 
-        # Flip or rotate the data if necessary (depending on how it's oriented)
-        # You may need to try different variations of flip or transpose based on your data orientation
+        # Plot the data, flip or rotate if necessary
         if data.ndim == 3:
-            ax.imshow(np.flipud(data[0, :, :]), extent=[lon.min(), lon.max(), lat.min(), lat.max()], 
-                      transform=ccrs.PlateCarree(), cmap='Blues', origin='upper')
+            im = ax.imshow(np.flipud(data[0, :, :]), extent=[lon.min(), lon.max(), lat.min(), lat.max()],
+                           transform=ccrs.PlateCarree(), cmap='Blues', origin='upper')
         elif data.ndim == 2:
-            ax.imshow(np.flipud(data), extent=[lon.min(), lon.max(), lat.min(), lat.max()], 
-                      transform=ccrs.PlateCarree(), cmap='Blues', origin='upper')
-               
-        # Add country borders
-        ax.add_feature(cfeature.BORDERS, linewidth=1, edgecolor='black')
-        ax.add_feature(cfeature.COASTLINE, linewidth=1)
+            im = ax.imshow(np.flipud(data), extent=[lon.min(), lon.max(), lat.min(), lat.max()],
+                           transform=ccrs.PlateCarree(), cmap='Blues', origin='upper')
 
-        # Add gridlines for better readability
-        ax.gridlines(draw_labels=True, dms=True, x_inline=False, y_inline=False)
 
-        # Display the plot
-        st.pyplot(fig)
-
-    except Exception as e:
-        st.error(f"An error occurred while processing the file: {e}")
-
-    finally:
-        # Safely close the NetCDF file
-        try:
-            nc.close()
-        except Exception as e:
-            st.error(f"An error occurred while closing the NetCDF file: {e}")
