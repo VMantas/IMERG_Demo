@@ -1,71 +1,52 @@
 import streamlit as st
-import earthaccess
-import xarray as xr
-import os
-import requests
-import netCDF4
+import numpy as np
+import matplotlib.pyplot as plt
+from netCDF4 import Dataset
 
-# Authenticate with NASA EarthData
-@st.cache_resource
-def authenticate():
-    try:
-        auth = earthaccess.login()
-        st.success("Successfully authenticated with NASA EarthData")
-        return auth
-    except Exception as e:
-        st.error(f"Authentication failed: {str(e)}")
-        return None
+# Set up Streamlit page
+st.title("GPM IMERG Final Precipitation Data")
 
-auth = authenticate()
+# Upload NetCDF file
+uploaded_file = st.file_uploader("Upload GPM IMERG Final NetCDF File", type="nc")
 
-# Retrieve GPM IMERG data
-def get_gpm_imerg_data():
-    data_date = "20201228"
-    
-    try:
-        results = earthaccess.search_data(
-            short_name="GPM_3IMERGDF",
-            version="07",
-            cloud_hosted=False,
-            temporal=(f"{data_date}", f"{data_date}"),
-            bounding_box=(-180, -90, 180, 90)
-        )
-        
-        st.write(f"Number of results found: {len(results)}")
-        
-        if not results:
-            st.error(f"No data found for {data_date}")
-            return None
-        
-        dataset_link = results[0].data_links()[0]
-        st.write(f"Dataset link: {dataset_link}")
-        
-        # Download the NetCDF4 file locally
-        response = requests.get(dataset_link)
-        file_name = "data.nc4"
-        
-        with open(file_name, 'wb') as f:
-            f.write(response.content)
-        
-        # Open the downloaded dataset with chunking to reduce memory usage
-        chunks = {'lon': 10, 'lat': 10, 'time': 1}
-        with xr.open_dataset(file_name, chunks=chunks) as ds:
-            # Load only the precipitation data
-            precip_data = ds['precipitationCal'].load()
-        
-        st.success("Successfully loaded precipitation data")
-        return precip_data
-    except Exception as e:
-        st.error(f"Error in get_gpm_imerg_data: {str(e)}")
-        return None
+if uploaded_file:
+    # Open the NetCDF file
+    nc = Dataset(uploaded_file, mode='r')
 
-# Load the data (without caching)
-st.write("Attempting to load GPM IMERG data...")
-data = get_gpm_imerg_data()
+    # Display available variables
+    st.subheader("Available Variables:")
+    variables = list(nc.variables.keys())
+    st.write(variables)
 
-if data is not None:
-    st.success("Data loaded successfully")
-    st.write("Data shape:", data.shape)
-else:
-    st.error("Failed to load data")
+    # Select precipitation variable (Assuming it’s named "precipitation" in the dataset)
+    precip_var = st.selectbox("Select Precipitation Variable", variables)
+
+    if precip_var:
+        # Extract the precipitation data
+        precip_data = nc.variables[precip_var][:]
+
+        # Select a time slice for visualization
+        time_dim = nc.variables['time'][:]
+        time_index = st.slider("Select Time Index", 0, len(time_dim)-1, 0)
+
+        # Select a geographic region to display
+        lat = nc.variables['lat'][:]
+        lon = nc.variables['lon'][:]
+        lat_range = st.slider("Latitude Range", float(lat.min()), float(lat.max()), (lat.min(), lat.max()))
+        lon_range = st.slider("Longitude Range", float(lon.min()), float(lon.max()), (lon.min(), lon.max()))
+
+        # Filter data by selected region
+        lat_filter = np.where((lat >= lat_range[0]) & (lat <= lat_range[1]))[0]
+        lon_filter = np.where((lon >= lon_range[0]) & (lon <= lon_range[1]))[0]
+        selected_precip_data = precip_data[time_index, lat_filter, :][:, lon_filter]
+
+        # Plot the data
+        st.subheader("Precipitation Data Visualization")
+        fig, ax = plt.subplots()
+        im = ax.imshow(selected_precip_data, cmap='Blues', aspect='auto', origin='lower')
+        plt.colorbar(im, ax=ax, label="mm/h")
+        st.pyplot(fig)
+
+    # Close the NetCDF file
+    nc.close()
 
