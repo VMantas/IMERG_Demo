@@ -2,16 +2,22 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 from netCDF4 import Dataset
+import tempfile
 
 # Set up Streamlit page
 st.title("GPM IMERG Final Precipitation Data")
 
 # Upload NetCDF file
-uploaded_file = st.file_uploader("Upload GPM IMERG Final NetCDF File", type="nc")
+uploaded_file = st.file_uploader("Upload GPM IMERG Final NetCDF File", type="nc4")
 
 if uploaded_file:
-    # Open the NetCDF file
-    nc = Dataset(uploaded_file, mode='r')
+    # Save the uploaded file to a temporary file on disk
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file.write(uploaded_file.read())
+        tmp_file_path = tmp_file.name
+    
+    # Open the NetCDF file from the temporary file path
+    nc = Dataset(tmp_file_path, mode='r')
 
     # Display available variables
     st.subheader("Available Variables:")
@@ -49,4 +55,3 @@ if uploaded_file:
 
     # Close the NetCDF file
     nc.close()
-
