@@ -44,7 +44,7 @@ if uploaded_file:
         # Plot the data, flip or rotate if necessary
         if data.ndim == 3:
             im = ax.imshow(np.flipud(data[0, :, :]), extent=[lon.min(), lon.max(), lat.min(), lat.max()],
-                           transform=ccrs.PlateCarree(), cmap='Blues', origin='upper')
+                           transform=ccrs.PlateCarree(), cmap='Blues', origin='upper',vmin=0, vmax=50)
         elif data.ndim == 2:
             im = ax.imshow(np.flipud(data), extent=[lon.min(), lon.max(), lat.min(), lat.max()],
                            transform=ccrs.PlateCarree(), cmap='Blues', origin='upper')
