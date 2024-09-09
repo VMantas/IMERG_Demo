@@ -45,11 +45,15 @@ if uploaded_file:
         # You may need to try different variations of flip or transpose based on your data orientation
         if data.ndim == 3:
             ax.imshow(np.flipud(data[0, :, :]), extent=[lon.min(), lon.max(), lat.min(), lat.max()], 
-                      transform=ccrs.PlateCarree(), cmap='bwr', origin='upper')
+                      transform=ccrs.PlateCarree(), cmap='Blues', origin='upper')
         elif data.ndim == 2:
             ax.imshow(np.flipud(data), extent=[lon.min(), lon.max(), lat.min(), lat.max()], 
                       transform=ccrs.PlateCarree(), cmap='Blues', origin='upper')
-
+        
+        # Add a colorbar
+        cbar = fig.colorbar(im, ax=ax, orientation='vertical', pad=0.05)
+        cbar.set_label("Precipitation (mm/h)")
+        
         # Add country borders
         ax.add_feature(cfeature.BORDERS, linewidth=1, edgecolor='black')
         ax.add_feature(cfeature.COASTLINE, linewidth=1)
