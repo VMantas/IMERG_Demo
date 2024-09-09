@@ -10,7 +10,7 @@ import cartopy.feature as cfeature  # For country borders
 st.title("GPM IMERG Final Precipitation Data with Geographic Boundaries")
 
 # Upload NetCDF file
-uploaded_file = st.file_uploader("Upload GPM IMERG Final NetCDF File", type="nc")
+uploaded_file = st.file_uploader("Upload GPM IMERG Final NetCDF File", type="nc4")
 
 if uploaded_file:
     try:
