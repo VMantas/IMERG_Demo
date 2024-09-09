@@ -28,12 +28,18 @@ if uploaded_file:
     precip_var = st.selectbox("Select Precipitation Variable", variables)
 
     if precip_var:
-        # Extract the precipitation data
-        precip_data = nc.variables[precip_var][:]
+    # Extract the precipitation data
+    precip_data = nc.variables[precip_var][:]
 
+    # Check the shape and contents of the time dimension
+    time_dim = nc.variables['time'][:]
+    st.write("Time Dimension Info:", time_dim)
+    st.write("Time Dimension Shape:", time_dim.shape)
+
+    # Make sure time_dim is valid
+    if time_dim.size > 0:
         # Select a time slice for visualization
-        time_dim = nc.variables['time'][:]
-        time_index = st.slider("Select Time Index", 0, len(time_dim)-1, 0)
+        time_index = st.slider("Select Time Index", 0, len(time_dim) - 1, 0)
 
         # Select a geographic region to display
         lat = nc.variables['lat'][:]
@@ -52,6 +58,8 @@ if uploaded_file:
         im = ax.imshow(selected_precip_data, cmap='Blues', aspect='auto', origin='lower')
         plt.colorbar(im, ax=ax, label="mm/h")
         st.pyplot(fig)
+    else:
+        st.error("The time dimension is empty or invalid.")
 
     # Close the NetCDF file
     nc.close()
