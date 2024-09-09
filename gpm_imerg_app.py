@@ -44,7 +44,7 @@ if uploaded_file:
     # Close the NetCDF file
     nc.close()
 
-        st.pyplot(fig)
+
 
     # Close the NetCDF file
     nc.close()
