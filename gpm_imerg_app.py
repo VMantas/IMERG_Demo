@@ -45,7 +45,7 @@ if uploaded_file:
         # You may need to try different variations of flip or transpose based on your data orientation
         if data.ndim == 3:
             ax.imshow(np.flipud(data[0, :, :]), extent=[lon.min(), lon.max(), lat.min(), lat.max()], 
-                      transform=ccrs.PlateCarree(), cmap='Blues', origin='upper')
+                      transform=ccrs.PlateCarree(), cmap='bwr', origin='upper')
         elif data.ndim == 2:
             ax.imshow(np.flipud(data), extent=[lon.min(), lon.max(), lat.min(), lat.max()], 
                       transform=ccrs.PlateCarree(), cmap='Blues', origin='upper')
