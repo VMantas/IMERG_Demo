@@ -49,4 +49,27 @@ if uploaded_file:
             im = ax.imshow(np.flipud(data), extent=[lon.min(), lon.max(), lat.min(), lat.max()],
                            transform=ccrs.PlateCarree(), cmap='Blues', origin='upper')
 
+        # Add a colorbar
+        cbar = fig.colorbar(im, ax=ax, orientation='vertical', pad=0.05)
+        cbar.set_label("Precipitation (mm/h)")
+
+        # Add country borders and coastlines
+        ax.add_feature(cfeature.BORDERS, linewidth=1, edgecolor='black')
+        ax.add_feature(cfeature.COASTLINE, linewidth=1)
+
+        # Add gridlines for better readability
+        ax.gridlines(draw_labels=True, dms=True, x_inline=False, y_inline=False)
+
+        # Display the plot
+        st.pyplot(fig)
+
+    except Exception as e:
+        st.error(f"An error occurred while processing the file: {e}")
+
+    finally:
+        # Safely close the NetCDF file
+        try:
+            nc.close()
+        except Exception as e:
+            st.error(f"An error occurred while closing the NetCDF file: {e}")
 
