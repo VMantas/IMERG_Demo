@@ -28,13 +28,13 @@ if uploaded_file:
     precip_var = st.selectbox("Select Precipitation Variable", variables)
 
     if precip_var:
-    # Extract the precipitation data
-    precip_data = nc.variables[precip_var][:]
+        # Extract the precipitation data
+        precip_data = nc.variables[precip_var][:]
 
-    # Check the shape and contents of the time dimension
-    time_dim = nc.variables['time'][:]
-    st.write("Time Dimension Info:", time_dim)
-    st.write("Time Dimension Shape:", time_dim.shape)
+        # Check the shape and contents of the time dimension
+        time_dim = nc.variables['time'][:]
+        st.write("Time Dimension Info:", time_dim)
+        st.write("Time Dimension Shape:", time_dim.shape)
 
     # Make sure time_dim is valid
     if time_dim.size > 0:
