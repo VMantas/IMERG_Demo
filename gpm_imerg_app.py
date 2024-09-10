@@ -46,13 +46,13 @@ def search_and_download_imer_data(date="20201228"):
         
         # Use earthaccess.download to handle authentication and download
         st.write("Attempting to download the dataset...")
-        tmp_file_path = earthaccess.download(dataset)
-        if tmp_file_path:
-            st.success("Successfully downloaded the data")
-            return tmp_file_path
-        else:
-            st.error("Failed to download the dataset")
-            return None
+        
+        # Specify a temporary local path to save the file
+        local_path = tempfile.gettempdir() + "/gpm_imerg_data.nc4"
+        
+        earthaccess.download(dataset, local_path=local_path)
+        st.success(f"Successfully downloaded the data to {local_path}")
+        return local_path
     except Exception as e:
         st.error(f"Error in search_and_download_imer_data: {str(e)}")
         return None
@@ -115,3 +115,4 @@ if data_file:
             nc.close()
         except Exception as e:
             st.error(f"An error occurred while closing the NetCDF file: {e}")
+
