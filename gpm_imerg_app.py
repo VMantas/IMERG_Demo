@@ -52,6 +52,7 @@ def search_and_download_imer_data(date="20201228"):
         
         earthaccess.download(dataset, local_path=local_path)
         st.success(f"Successfully downloaded the data to {local_path}")
+        
         return local_path
     except Exception as e:
         st.error(f"Error in search_and_download_imer_data: {str(e)}")
@@ -63,7 +64,7 @@ data_file = search_and_download_imer_data()
 if data_file:
     try:
         # Open the NetCDF file from the downloaded file path
-        nc = Dataset(data_file, mode='r', type=nc4)  # Use the correct local_path here
+        nc = Dataset(data_file, mode='r')  # Use the correct local_path here
 
         # Display the variables
         st.subheader("Available Variables:")
