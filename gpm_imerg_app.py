@@ -65,7 +65,7 @@ if data_file:
     try:
         # Open the NetCDF file from the downloaded file path
         st.write(f"Downloaded file link: {data_file}")
-        st.download_button('Download file', f, file_name=data_file)
+        st.download_button('Download file', file_name=data_file)
         nc = Dataset(data_file, mode='r')  # Use the correct local_path here
         
 
