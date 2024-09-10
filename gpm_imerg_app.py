@@ -65,7 +65,7 @@ if data_file:
     try:
         # Open the NetCDF file from the downloaded file path
         st.write(f"Downloaded file link: {data_file}")
-        st.download_button(label="Download NC4 File", data=open(data_file, 'rb'), file_name="gpm_imerg_data.nc4", mime="application/x-netcdf4")
+        st.download_button(label="Download NC4 File", data=open(data_file, 'r'), file_name="gpm_imerg_data.nc4", mime="application/x-netcdf4")
         nc = Dataset(data_file, mode='r')  # Use the correct local_path here
         
 
