@@ -63,7 +63,7 @@ data_file = search_and_download_imer_data()
 if data_file:
     try:
         # Open the NetCDF file from the downloaded file path
-        nc = Dataset(data_file, mode='r')  # Use the correct local_path here
+        nc = Dataset(data_file, mode='r', type=nc4)  # Use the correct local_path here
 
         # Display the variables
         st.subheader("Available Variables:")
