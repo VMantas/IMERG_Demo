@@ -65,7 +65,7 @@ if data_file:
     try:
         # Open the NetCDF file from the downloaded file path
         nc = Dataset(data_file, mode='r')  # Use the correct local_path here
-        st.write(f"Displaying data for variable: {nc}")
+        st.write(f"Downloaded file link: {nc}")
 
         # Display the variables
         st.subheader("Available Variables:")
