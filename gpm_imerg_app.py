@@ -22,7 +22,7 @@ def authenticate():
         return None
 
 auth = authenticate()
-local_path2 = ""
+
 # Step 2: Search and download GPM IMERG Final data from EarthData
 def search_and_download_imer_data(date="20201228"):
     try:
@@ -63,7 +63,7 @@ data_file = search_and_download_imer_data()
 if data_file:
     try:
         # Open the NetCDF file from the downloaded file path
-        nc = Dataset(local_path, mode='r')
+        nc = Dataset(data_file, mode='r')  # Use the correct local_path here
 
         # Display the variables
         st.subheader("Available Variables:")
@@ -115,4 +115,3 @@ if data_file:
             nc.close()
         except Exception as e:
             st.error(f"An error occurred while closing the NetCDF file: {e}")
-
