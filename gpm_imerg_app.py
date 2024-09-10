@@ -5,8 +5,7 @@ from netCDF4 import Dataset
 import tempfile
 import cartopy.crs as ccrs  # For map projections
 import cartopy.feature as cfeature  # For country borders
-import earthaccess  # For NASA EarthData authentication and search
-import requests  # For downloading the file
+import earthaccess  # For NASA EarthData authentication and download
 
 # Set up Streamlit page
 st.title("GPM IMERG Final Precipitation Data with Geographic Boundaries")
@@ -40,17 +39,15 @@ def search_and_download_imer_data(date="20201228"):
             st.error(f"No data found for {date}")
             return None
         
-        # Get the first dataset link
-        dataset_link = results[0].data_links()[0]
+        # Get the first dataset
+        dataset = results[0]
+        dataset_link = dataset.data_links()[0]
         st.write(f"Dataset link: {dataset_link}")
         
-        # Download the NetCDF4 file locally using requests
-        response = requests.get(dataset_link)
-        if response.status_code == 200:
-            # Save the downloaded file to a temporary location
-            with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
-                tmp_file.write(response.content)
-                tmp_file_path = tmp_file.name
+        # Use earthaccess.download to handle authentication and download
+        st.write("Attempting to download the dataset...")
+        tmp_file_path = earthaccess.download(dataset)
+        if tmp_file_path:
             st.success("Successfully downloaded the data")
             return tmp_file_path
         else:
@@ -60,12 +57,12 @@ def search_and_download_imer_data(date="20201228"):
         st.error(f"Error in search_and_download_imer_data: {str(e)}")
         return None
 
-# Load the data from NASA EarthData
+# Step 3: Load the data from NASA EarthData
 data_file = search_and_download_imer_data()
 
 if data_file:
     try:
-        # Step 3: Open the NetCDF file from the temporary file path
+        # Open the NetCDF file from the downloaded file path
         nc = Dataset(data_file, mode='r')
 
         # Display the variables
@@ -118,5 +115,3 @@ if data_file:
             nc.close()
         except Exception as e:
             st.error(f"An error occurred while closing the NetCDF file: {e}")
-
-       
