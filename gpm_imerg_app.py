@@ -8,7 +8,7 @@ import cartopy.feature as cfeature  # For country borders
 import earthaccess  # For NASA EarthData authentication and download
 
 # Set up Streamlit page
-st.title("GPM IMERG Final Precipitation Data with Geographic Boundaries")
+st.title("Test")
 
 # Step 1: Authenticate with EarthData
 @st.cache_resource
@@ -65,6 +65,7 @@ if data_file:
     try:
         # Open the NetCDF file from the downloaded file path
         nc = Dataset(data_file, mode='r')  # Use the correct local_path here
+        st.write(f"Displaying data for variable: {nc}")
 
         # Display the variables
         st.subheader("Available Variables:")
